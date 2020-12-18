@@ -494,9 +494,7 @@ button1.setOnClickListener {
 
 AlterDialog / Toast Message
 
-![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/6_Assignment/6_Assignment.gif)
-
-<img src="https://github.com/wogus0333/INU_MobileSoftware/blob/main/6_Assignment/6_Assignment.gif" height="640px" width="360px">
+<img src="https://github.com/wogus0333/INU_MobileSoftware/blob/main/6_Assignment/6_Assignment.gif" height="800px" width="360px">
 
 </br>
 
