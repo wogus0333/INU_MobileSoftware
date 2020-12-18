@@ -56,7 +56,7 @@ Project 4-1 (간단한 계산기)
 
 
 ```Kotlin
-		btnAdd.setOnTouchListener { view, motionEvent ->
+btnAdd.setOnTouchListener { view, motionEvent ->
             num1 = edit1.text.toString()
             num2 = edit2.text.toString()
             result = Integer.parseInt(num1) + Integer.parseInt(num2)
@@ -162,7 +162,7 @@ Project 4-2 (애완동물 사진 보기)
 ```Kotlin
 chkAgree = findViewById<CheckBox>(R.id.ChkAgree)
 
-		chkAgree.setOnCheckedChangeListener { compoundButton, b ->
+chkAgree.setOnCheckedChangeListener { compoundButton, b ->
             if(chkAgree.isChecked == true){
             text2.visibility = android.view.View.VISIBLE
             rGroup1.visibility = android.view.View.VISIBLE
@@ -186,7 +186,7 @@ chkAgree = findViewById<CheckBox>(R.id.ChkAgree)
 1. Button을 눌렀을 때 RadioGroup 내에 체크가 된 RadioButton의 Id가 있으면 ImageView에 setImageResource()를 사용하여 이미지 지정
 
 ```Kotlin
-		btnOK.setOnClickListener {
+btnOK.setOnClickListener {
             when (rGroup1.checkedRadioButtonId){
                 R.id.RdoDog -> imgPet.setImageResource(R.drawable.dog)
                 R.id.RdoCat -> imgPet.setImageResource(R.drawable.cat)
@@ -283,7 +283,7 @@ chkAgree = findViewById<CheckBox>(R.id.ChkAgree)
 1. Button을 눌렀을 때 id가 201501494이고 passwd가 "한재현"이 입력된 경우에만 로그인 성공
 
 ```Kotlin
-		button.setOnTouchListener { v, event ->
+button.setOnTouchListener { v, event ->
             var id_num = input_id.text.toString()
             var passwd_str = input_passwd.text.toString()
             if (passwd_str.isEmpty() || id_num.isEmpty())
@@ -319,43 +319,9 @@ chkAgree = findViewById<CheckBox>(R.id.ChkAgree)
 > MainActivity.kt
 
 1. 예약 시작 Button을 누르면 chronometer 위젯에 SystemClock.elapsedRealtime()을 base로 하여 start() 이후 시간을 알려준다.(버튼을 누른 순간부터 시간이 흐름)
-2. 시간 설정 RadioButton을 눌러서 TimePicker를 통하여 시간을 정한다.
-3. 날짜 설정 RadioButton을 눌러서 년/월/일을 정한다.
-4. 예약완료 Button을 누르면 chronometer.stop()으로 시간을 멈춘 후 하단 TextView에 년월일시간을 표시한다.
-
-```Kotlin
-title = "시간 예약"
-
-        rdoCal.setOnClickListener{
-            timePicker1.visibility = View.INVISIBLE
-            calendarView1.visibility = View.VISIBLE
-        }
-        rdoTime.setOnClickListener {
-            timePicker1.visibility = View.VISIBLE
-            calendarView1.visibility = View.INVISIBLE
-        }
-        btnStart.setOnClickListener {
-            chronometer1.base = SystemClock.elapsedRealtime()
-            chronometer1.start()
-            chronometer1.setTextColor(Color.RED)
-        }
-        btnEnd.setOnClickListener {
-            chronometer1.stop()
-            chronometer1.setTextColor(Color.BLUE)
-            tvYear.text = selectYear.toString()
-            tvMonth.text = selectMonth.toString()
-            tvDay.text = selectDay.toString()
-            tvHour.text = (timePicker1.currentHour).toString()
-            tvMinute.text = (timePicker1.currentMinute).toString()
-        }
-        calendarView1.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            selectYear = year
-            selectMonth = month + 1
-            selectDay = dayOfMonth
-        }
-```
-
-</br>
+2. 시간 설정 RadioButton을 눌러서 TimePicker를 통하여 시간을 정함
+3. 날짜 설정 RadioButton을 눌러서 년/월/일을 정함
+4. 예약완료 Button을 누르면 chronometer.stop()으로 시간을 멈춘 후 하단 TextView에 년월일시간을 표시</br>
 
 > activity_main.xml
 
@@ -455,3 +421,237 @@ title = "시간 예약"
 
 </br>
 
+## Assignment 5
+
+###### 제출 일자 : 2020.11.13
+
+### 실행 화면
+
+AlterDialog / Toast Message
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/5_Assignment/1_초기화면.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/5_Assignment/2_button1누름.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/5_Assignment/3_EditText입력.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/5_Assignment/4_확인.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/5_Assignment/5_취소.PNG)
+
+</br>
+
+### 코드 설명
+
+**AlterDialog / ToastMessage**
+
+> MainActivity.kt
+
+1. R.layout.dialog1의 view를 inflate(메모리에 객체화)
+2. dlg에 AlterDialog .Builder 객체를 생성
+3. dlg에 setIcon을 통해 Icon을 설정하고 setView를 통해 dialogView를 세팅
+4. setPositiveButton("확인")을 통하여 버튼을 설정하고 눌렀을 경우 EditText에 입력한 이름과 이메일이 activity_main.xml의 TextView로 이동됨
+5. setNegativeButton("취소")을 통하여 버튼을 설정하고 눌렀을 경우 ToastMessage가 출력됨
+6. toastView에 R.layout.toast1의 view를 inflate
+7. toastView안에 있는 TextView에 "취소했습니다." 문자열 저장
+8. toast.view에 세팅한 toastView를 저장하고 show()를 사용하여 출력
+
+```Kotlin
+button1.setOnClickListener {
+            dialogView = View.inflate(this, R.layout.dialog1, null)
+            val dlg = AlertDialog.Builder(this)
+            dlg.setTitle("사용자 정보 입력")
+            dlg.setIcon(R.drawable.ic_menu_allfriends)
+            dlg.setView(dialogView)
+            dlg.setPositiveButton("확인"){dialog, which ->
+                dlgEdtName = dialogView.findViewById<EditText>(R.id.dlgEdt1)
+                dlgEdtEmail = dialogView.findViewById<EditText>(R.id.dlgEdt2)
+
+                tvName.text = dlgEdtName.text.toString() // Edt_name
+                tvEmail.text = dlgEdtEmail.text.toString() // Edt_email
+            }
+            dlg.setNegativeButton("취소"){dialog, which ->
+                val toast = Toast(this)
+                toastView = View.inflate(this,R.layout.toast1, null)
+                toastText = toastView.findViewById<TextView>(R.id.toastText1)
+                toastText.text = "취소했습니다."
+                toast.view = toastView
+                toast.show()
+            }
+            dlg.show()
+        }
+```
+
+</br>
+
+</br>
+
+## Assignment 6
+
+###### 제출 일자 : 2020.11.27
+
+### 실행 화면
+
+AlterDialog / Toast Message
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/6_Assignment/6_Assignment.gif)
+
+
+
+</br>
+
+### 코드 설명
+
+**app1. Intent / startActivity**
+
+> MainActivity.kt
+
+1. Button을 눌러 SecondActivity로 이동
+
+```Kotlin
+btnNewActivity.setOnClickListener {
+            val intent = Intent(this, SecondActivity::class.java)
+            startActivity(intent)
+        }
+```
+
+</br>
+
+**app1. finish**
+
+> SecondActivity.kt
+
+1. Button을 눌러 finish()를 통해 Activity 종료
+
+```Kotlin
+btnReturn.setOnClickListener {
+            finish()
+        }
+```
+
+</br>
+
+**app2. intent.putExtra**
+
+> MainActivity.kt
+
+1. Button을 눌러 ResultActivity로 이동할 때 voteCount랑 imgName을 "VoteCount"와 "ImageName"으로 전달
+
+```Kotlin
+btnFinih.setOnClickListener {
+            val intent = Intent(applicationContext, ResultActivity::class.java)
+            intent.putExtra("VoteCount", voteCount)
+            intent.putExtra("ImageName", imgName)
+            startActivity(intent)
+        }
+```
+
+</br>
+
+**app2. intent.getExtra**
+
+> ResultActivity.kt
+
+1. 자료형에 맞게 각각 getIntArrayExtra("VoteCount"), getStringArrayExtra("ImageName")으로 전달받음
+
+```Kotlin
+val intent = intent
+val voteResult = intent.getIntArrayExtra("VoteCount")
+val imageName = intent.getStringArrayExtra("ImageName")
+```
+
+</br>
+
+**app3. startActivityForResult / onActivityResult**
+
+> MainActivity.kt
+
+1. startActivityForResult()로 SecondActivity 호출 : 인자로 intent와 Request_code를 사용
+2. Request_code : onActivityResult()에서 여러 개의 startActivityForResult()를 구분하게 해주는 코드
+3. onActivityResult() : 호출된 Activity에서 저장한 결과를 돌려줌, requestCode, resultCode, Intent를 인자로 받음
+
+```Kotlin
+btnNewActivity.setOnClickListener {
+            var intent = Intent(this, SecondActivity::class.java)
+            intent.putExtra("Num1", Integer.parseInt(edtNum1.text.toString()))
+            intent.putExtra("Num2", Integer.parseInt(edtNum2.text.toString()))
+            startActivityForResult(intent, 0) // 0 : Request_code
+        }
+
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            var hap = data!!.getIntExtra("Hap", 0)
+            Toast.makeText(this,"합계 : $hap", Toast.LENGTH_SHORT).show()
+        }
+    }
+```
+
+</br>
+
+**app3. setResult**
+
+> SecondActivity.kt
+
+1. setResult() : 결과 저장 (Result_code : RESULT_OK, RESULT_CANCEL)
+
+```Kotlin
+btnReturn.setOnClickListener {
+            var outIntent = Intent(this,MainActivity::class.java)
+            outIntent.putExtra("Hap", hapValue)
+            setResult(Activity.RESULT_OK,outIntent)
+            finish()
+        }
+```
+
+</br>
+
+**app4. 암시적 인텐트**
+
+> MainActivity.kt
+
+1. 전화 : 액션(ACTION_DAIL), Uri(tel:010-1234-5678)
+2. 나머지도 비슷한 원리
+
+```Kotlin
+btnDial.setOnClickListener {
+            var uri = Uri.parse("tel:010-1234-5678")
+            var intent = Intent(Intent.ACTION_DIAL, uri)
+            startActivity(intent)
+        }
+
+        btnWeb.setOnClickListener {
+            var uri = Uri.parse("http://www.hanbit.co.kr")
+            var intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+
+        btnGoogle.setOnClickListener {
+            var uri = Uri.parse("https://maps.google.com/maps?q="
+            + 37.559133 + "," + 126.927824)
+            var intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+
+        btnSearch.setOnClickListener {
+            var intent = Intent(Intent.ACTION_WEB_SEARCH)
+            intent.putExtra(SearchManager.QUERY,"안드로이드")
+            startActivity(intent)
+        }
+
+        btnSms.setOnClickListener {
+            var intent = Intent(Intent.ACTION_SENDTO)
+            intent.putExtra("sms_body","안녕하세요?")
+            intent.data = Uri.parse("smsto:" + Uri.encode("010-1234-4567"))
+            startActivity(intent)
+        }
+
+        btnPhoto.setOnClickListener {
+            var intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivity(intent)
+        }
+```
+
+</br>
+
+</br>
