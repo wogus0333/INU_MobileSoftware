@@ -790,7 +790,7 @@ private var fr: Fragment = FragmentA()
 
 계산기 / ListView / Adapter / Landscape 
 
-![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/Final_Test/Final_Test.gif)
+<img src="https://github.com/wogus0333/INU_MobileSoftware/blob/main/Final_Test/Final_Test.gif" height="800px" width="360px">
 
 </br>
 
