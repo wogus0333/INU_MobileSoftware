@@ -654,149 +654,128 @@ btnDial.setOnClickListener {
 
 </br>
 
-## Assignment 7
+## Assignment 8
 
 ###### 제출 일자 : 2020.12.04
 
 ### 실행 화면
 
-GridView / Gallery
+Fragment / SupportFragmentManager
 
-![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/7_Assignment/11-1.PNG)
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/8_Assignment/1_1.PNG)
 
-![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/7_Assignment/11-2.PNG)
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/8_Assignment/1_2.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/8_Assignment/1_3.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/8_Assignment/1_4.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/8_Assignment/2_1.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/8_Assignment/2_2.PNG)
 
 </br>
 
 ### 코드 설명
 
-**app1. GridView / Adapter**
+**app1. fragment**
 
-> MainActivity.kt
+> FragmentA.kt
 
-1. Adapter 
-   - 데이터 테이블을 목록 형태로 보여주기 위해 사용되는 것으로 데이터를 다양한 형식의 리스트 형식으로 보여주기 위해서 데이터와 리스트 뷰 사이에 존재하는 객체 (한마디로 데이터와 리스트 뷰 사이의 통신을 위한 다리 역할)
-   - Adapter View가 출력할 수 있는 데이터로 만들어 놓는 공간, Adapter View는 이 데이터를 출력하는 역할
-2. Adapter View 
-   - 많은 정보를 효과적으로 처리하기 위해, View에 직접 정보를 주입하지 않고, Adapter라는 중간 매개체를 이용하기 때문에 붙여진 이름
-   - ViewGroup을 상속받으므로 내부적으로 많은 뷰들을 담을 수 있음
-   - 대표적인 Adapter View의 서브 클래스로는 ListView, GridView, Spinner, Gallery 등이 있음
-3. MyGridAdapter
-   - BaseAdapter의 상속을 받음
-   - Implement methods : getCount(), getItem(), getItemId(), getView()
-   - getCount() : posterID.size를 리턴하여 데이터 개수만큼의 크기를 반환한다.
-   - getView() : 인자로 받은 위치의 데이터가 화면에 표시될 뷰 반환
-     - LayoutParams() : 폭과 높이 파라미터 설정
-     - ScaleType.FIT_CENTER : 원본 크기 그대로 보여줌(가운데 정렬)
-     - AlertDaialog 사용하여 포스터 이미지, 포스터 제목, 아이콘 등을 출력
+1. Fragment
+   - Activity 내에 생성되는 UI 구성을 여러 개의 모듈 단위로 작성할 수 있음
+   - 자체 수명 주기를 가지고, 자체 입력 이벤트를 받으며, Activity 실행 중에 추가 및 제거가 가능한 Activity의 모듈식 섹션(재사용 가능한 "하위 Activity" 개념)
+   - onCreateView()
+     - UI를 구성할 때 호출되는 메소드
+     - Fragment를 통해 UI를 그리고자 한다면 이 메소드의 결과로 Fragment layout의 루트에 해당하는 View를 리턴(false)
 
 ```Kotlin
-var gv = findViewById<View>(R.id.gridView1) as GridView
-        var gAdapter = MyGridAdapter(this)
-        gv.adapter = gAdapter
+override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_a, container, false)
     }
-
-    inner class MyGridAdapter(var context: Context) : BaseAdapter(){
-        var posterID = arrayOf(
-            R.drawable.mov01, R.drawable.mov02, R.drawable.mov03, R.drawable.mov04,
-            R.drawable.mov05, R.drawable.mov06, R.drawable.mov07, R.drawable.mov08,
-            R.drawable.mov09, R.drawable.mov10
-        )
-        var posterName = arrayOf(
-            "써니", "완득이", "괴물", "라디오스타", "비열한 거리", "왕의 남자", "아일랜드",
-            "웰컴투 동막골", "헬보이", "Back to the future"
-        )
-
-        override fun getCount(): Int {
-            return posterID.size
-        }
-
-        override fun getItem(position: Int): Any {
-            return 0
-        }
-
-        override fun getItemId(position: Int): Long {
-            return 0
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            var imageview = ImageView(context)
-            imageview.layoutParams = ViewGroup.LayoutParams(200,300)
-            imageview.scaleType = ImageView.ScaleType.FIT_CENTER
-            imageview.setPadding(5,5,5,5)
-
-            imageview.setImageResource(posterID[position])
-            imageview.setOnClickListener{
-                var dialogView = View.inflate(this@MainActivity,R.layout.dialog,null)
-                var dlg = AlertDialog.Builder(this@MainActivity)
-                var ivPoster = dialogView.findViewById<ImageView>(R.id.ivPoster)
-                ivPoster.setImageResource(posterID[position])
-                dlg.setTitle(posterName[position])
-                dlg.setIcon(R.drawable.movie_icon)
-                dlg.setView(dialogView)
-                dlg.setNegativeButton("닫기", null)
-                dlg.show()
-            }
-            return imageview
-        }
 ```
 
 </br>
 
-**app2. Gallery**
+**app2. SupportFragmentManager**
 
 > MainActivity.kt
 
-1. GalleryView
-   - 항목들이 수평으로 스크롤되면서 중심에 놓인 현재 항목을 강조
+1. SupportFragmentManager
+   - beginTransaction()
+     - FragmentTransaction 생성
+   - add()
+     - Fragment 추가
+   - commit()
+     - Fragment 적용
+   - replace()
+     - Fragment 교체
+   - addToBackStack()
+     - 프래그먼트 교체 또는 삭제와 같은 프래그먼트 트랜잭션을 실행할 때는 사용자가 뒤로 이동하여 변경을 '실행취소'하도록 허용하는 것이 적절한 경우가 많음
+     - 프래그먼트 트랜잭션을 통해 사용자가 뒤로 이동할 수 있게 하려면, `FragmentTransaction`을 커밋하기 전에 `addToBackStack()`을 호출
+     - **참고:** 프래그먼트를 삭제 또는 교체하고 트랜잭션을 백 스택에 추가하면 삭제된 프래그먼트가 중지됨(폐기되지는 않음). 사용자가 뒤로 탐색하여 프래그먼트를 복원하는 경우 프래그먼트가 다시 시작됨. 트랜잭션을 백 스택에 추가하지 *않으면* 프래그먼트가 삭제되거나 교체될 때 폐기됨
 
 ```Kotlin
-val gallery = findViewById<Gallery>(R.id.gallery1)
-        val galAdapter = MyGalleryAdapter(this)
-        gallery.adapter = galAdapter
+private var fr: Fragment = FragmentA()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val view = findViewById<View>(R.id.fragment_container)
+        if(view!=null){
+            if(savedInstanceState!=null)
+                return
+        }
+
+        val transaction = supportFragmentManager.beginTransaction()
+
+        transaction.add(R.id.fragment_container, fr)
+        transaction.commit()
     }
 
-    inner class MyGalleryAdapter(var context: Context) : BaseAdapter(){
-        var posterID = arrayOf(
-            R.drawable.mov11, R.drawable.mov12, R.drawable.mov13, R.drawable.mov14,
-            R.drawable.mov15, R.drawable.mov16, R.drawable.mov17, R.drawable.mov18,
-            R.drawable.mov19, R.drawable.mov20
-        )
-        var posterName = arrayOf(
-            "여인의 향기", "쥬라기 공원", "포레스트 검프", "Groundhog Day", "혹성탈출",
-            "아름다운 비행", "내 이름은 칸", "해리포터", "마더", "킹콩을 들다"
-        )
-        override fun getCount(): Int {
-            return posterID.size
+    fun selectFragment(view:View){
+        fr = FragmentA()
+        if(view.id==R.id.button2){
+            fr = FragmentB()
         }
-        override fun getItem(position: Int): Any {
-            return 0
-        }
-        override fun getItemId(position: Int): Long {
-            return 0
-        }
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val imageview = ImageView(context)
-            imageview.layoutParams = Gallery.LayoutParams(200,300)
-            imageview.scaleType = ImageView.ScaleType.FIT_CENTER
-            imageview.setPadding(5,5,5,5)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fr)
+            .addToBackStack(null)
+            .commit()
+    }
+```
 
-            imageview.setImageResource(posterID[position])
+</br>
 
-            imageview.setOnClickListener{
-                var ivPoster = findViewById<ImageView>(R.id.ivPoster)
-                ivPoster.scaleType = ImageView.ScaleType.FIT_CENTER
-                ivPoster.setImageResource(posterID[position])
-                false
-                var toast = Toast(this@MainActivity)
-                toastView = View.inflate(this@MainActivity, R.layout.movie_toast, null)
-                toastText = toastView.findViewById<TextView>(R.id.tv_movie_title)
-                toastText.text = posterName[position]
-                toast.view = toastView
-                toast.show()
-            }
-            return imageview
-        }
+> activity_main.xml
+
+1. onClick
+   - 버튼 클릭 시 android:onClick="selectFragment" 코드로 인해 selectFragment 메소드 실행
+
+```Kotlin
+<Button
+            android:layout_margin="2dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="프래그먼트 A"
+            android:background="#FF75A4"
+            android:onClick="selectFragment"
+            android:id="@+id/button1"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_margin="2dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="프래그먼트 B"
+            android:background="#FFED4A"
+            android:onClick="selectFragment"
+            android:id="@+id/button2"
+            android:layout_weight="1"/>
 ```
 
 </br>
