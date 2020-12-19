@@ -492,7 +492,7 @@ button1.setOnClickListener {
 
 ### 실행 화면
 
-AlterDialog / Toast Message
+인텐트
 
 <img src="https://github.com/wogus0333/INU_MobileSoftware/blob/main/6_Assignment/6_Assignment.gif" height="800px" width="360px">
 
@@ -647,6 +647,155 @@ btnDial.setOnClickListener {
         btnPhoto.setOnClickListener {
             var intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivity(intent)
+        }
+```
+
+</br>
+
+</br>
+
+## Assignment 7
+
+###### 제출 일자 : 2020.12.04
+
+### 실행 화면
+
+GridView / Gallery
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/7_Assignment/11-1.PNG)
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/7_Assignment/11-2.PNG)
+
+</br>
+
+### 코드 설명
+
+**app1. GridView / Adapter**
+
+> MainActivity.kt
+
+1. Adapter 
+   - 데이터 테이블을 목록 형태로 보여주기 위해 사용되는 것으로 데이터를 다양한 형식의 리스트 형식으로 보여주기 위해서 데이터와 리스트 뷰 사이에 존재하는 객체 (한마디로 데이터와 리스트 뷰 사이의 통신을 위한 다리 역할)
+   - Adapter View가 출력할 수 있는 데이터로 만들어 놓는 공간, Adapter View는 이 데이터를 출력하는 역할
+2. Adapter View 
+   - 많은 정보를 효과적으로 처리하기 위해, View에 직접 정보를 주입하지 않고, Adapter라는 중간 매개체를 이용하기 때문에 붙여진 이름
+   - ViewGroup을 상속받으므로 내부적으로 많은 뷰들을 담을 수 있음
+   - 대표적인 Adapter View의 서브 클래스로는 ListView, GridView, Spinner, Gallery 등이 있음
+3. MyGridAdapter
+   - BaseAdapter의 상속을 받음
+   - Implement methods : getCount(), getItem(), getItemId(), getView()
+   - getCount() : posterID.size를 리턴하여 데이터 개수만큼의 크기를 반환한다.
+   - getView() : 인자로 받은 위치의 데이터가 화면에 표시될 뷰 반환
+     - LayoutParams() : 폭과 높이 파라미터 설정
+     - ScaleType.FIT_CENTER : 원본 크기 그대로 보여줌(가운데 정렬)
+     - AlertDaialog 사용하여 포스터 이미지, 포스터 제목, 아이콘 등을 출력
+
+```Kotlin
+var gv = findViewById<View>(R.id.gridView1) as GridView
+        var gAdapter = MyGridAdapter(this)
+        gv.adapter = gAdapter
+    }
+
+    inner class MyGridAdapter(var context: Context) : BaseAdapter(){
+        var posterID = arrayOf(
+            R.drawable.mov01, R.drawable.mov02, R.drawable.mov03, R.drawable.mov04,
+            R.drawable.mov05, R.drawable.mov06, R.drawable.mov07, R.drawable.mov08,
+            R.drawable.mov09, R.drawable.mov10
+        )
+        var posterName = arrayOf(
+            "써니", "완득이", "괴물", "라디오스타", "비열한 거리", "왕의 남자", "아일랜드",
+            "웰컴투 동막골", "헬보이", "Back to the future"
+        )
+
+        override fun getCount(): Int {
+            return posterID.size
+        }
+
+        override fun getItem(position: Int): Any {
+            return 0
+        }
+
+        override fun getItemId(position: Int): Long {
+            return 0
+        }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            var imageview = ImageView(context)
+            imageview.layoutParams = ViewGroup.LayoutParams(200,300)
+            imageview.scaleType = ImageView.ScaleType.FIT_CENTER
+            imageview.setPadding(5,5,5,5)
+
+            imageview.setImageResource(posterID[position])
+            imageview.setOnClickListener{
+                var dialogView = View.inflate(this@MainActivity,R.layout.dialog,null)
+                var dlg = AlertDialog.Builder(this@MainActivity)
+                var ivPoster = dialogView.findViewById<ImageView>(R.id.ivPoster)
+                ivPoster.setImageResource(posterID[position])
+                dlg.setTitle(posterName[position])
+                dlg.setIcon(R.drawable.movie_icon)
+                dlg.setView(dialogView)
+                dlg.setNegativeButton("닫기", null)
+                dlg.show()
+            }
+            return imageview
+        }
+```
+
+</br>
+
+**app2. Gallery**
+
+> MainActivity.kt
+
+1. GalleryView
+   - 항목들이 수평으로 스크롤되면서 중심에 놓인 현재 항목을 강조
+
+```Kotlin
+val gallery = findViewById<Gallery>(R.id.gallery1)
+        val galAdapter = MyGalleryAdapter(this)
+        gallery.adapter = galAdapter
+    }
+
+    inner class MyGalleryAdapter(var context: Context) : BaseAdapter(){
+        var posterID = arrayOf(
+            R.drawable.mov11, R.drawable.mov12, R.drawable.mov13, R.drawable.mov14,
+            R.drawable.mov15, R.drawable.mov16, R.drawable.mov17, R.drawable.mov18,
+            R.drawable.mov19, R.drawable.mov20
+        )
+        var posterName = arrayOf(
+            "여인의 향기", "쥬라기 공원", "포레스트 검프", "Groundhog Day", "혹성탈출",
+            "아름다운 비행", "내 이름은 칸", "해리포터", "마더", "킹콩을 들다"
+        )
+        override fun getCount(): Int {
+            return posterID.size
+        }
+        override fun getItem(position: Int): Any {
+            return 0
+        }
+        override fun getItemId(position: Int): Long {
+            return 0
+        }
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val imageview = ImageView(context)
+            imageview.layoutParams = Gallery.LayoutParams(200,300)
+            imageview.scaleType = ImageView.ScaleType.FIT_CENTER
+            imageview.setPadding(5,5,5,5)
+
+            imageview.setImageResource(posterID[position])
+
+            imageview.setOnClickListener{
+                var ivPoster = findViewById<ImageView>(R.id.ivPoster)
+                ivPoster.scaleType = ImageView.ScaleType.FIT_CENTER
+                ivPoster.setImageResource(posterID[position])
+                false
+                var toast = Toast(this@MainActivity)
+                toastView = View.inflate(this@MainActivity, R.layout.movie_toast, null)
+                toastText = toastView.findViewById<TextView>(R.id.tv_movie_title)
+                toastText.text = posterName[position]
+                toast.view = toastView
+                toast.show()
+            }
+            return imageview
         }
 ```
 
