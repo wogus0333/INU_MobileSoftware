@@ -781,3 +781,84 @@ private var fr: Fragment = FragmentA()
 </br>
 
 </br>
+
+## Final Test
+
+###### 제출 일자 : 2020.12.04
+
+### 실행 화면
+
+계산기 / ListView / Adapter / Landscape 
+
+![alt text](https://github.com/wogus0333/INU_MobileSoftware/blob/main/Final_Test/Final_Test.gif)
+
+</br>
+
+### 코드 설명
+
+**ListView / Adapter**
+
+> ListActivity.kt
+
+1. Adapter에 데이터를 저장한 후 ListView의 Adapter에 삽입
+2. list 항목을 누르면 해당 position을 저장한 후 버튼을 누르면 ResultActivity로 position을 전송
+
+```Kotlin
+var position_ : Int = -1
+
+        var btn_list = findViewById<Button>(R.id.btn_list)
+
+        var list = findViewById<View>(R.id.lv_list) as ListView
+        var mid = arrayOf("레옹", "바람과 함께 사라지다", "AMADEUS","라스트 모히칸",
+                "센과 치히로의 행방불명", "ALIEN", "터미네이터2" , "테이큰",
+                "브레이브 하트", "CINEMA PARADISO" )
+
+        var adapter : ArrayAdapter<String> = ArrayAdapter(this,
+        android.R.layout.simple_list_item_1,mid)
+        list.adapter =  adapter
+        list.setOnItemClickListener { parent, view, position, id ->
+            position_ = position
+        }
+        btn_list.setOnClickListener {
+            var intent = Intent(this, ResultActivity::class.java)
+            intent.putExtra("Position", position_)
+            startActivity(intent)
+        }
+```
+
+</br>
+
+> ResultActivity.kt
+
+1. 전해받은 position을 통해 해당 영화의 포스터와 제목을 출력
+
+```Kotlin
+var image = findViewById<ImageView>(R.id.iv_result)
+        var text = findViewById<TextView>(R.id.tv_result_title)
+
+        var position  = intent.getIntExtra("Position",0)
+
+        var title = arrayOf("레옹", "바람과 함께 사라지다", "AMADEUS","라스트 모히칸",
+                "센과 치히로의 행방불명", "ALIEN", "터미네이터2" , "테이큰",
+                "브레이브 하트", "CINEMA PARADISO" )
+        var poster = arrayOf(R.drawable.mov51,
+                R.drawable.mov52,
+                R.drawable.mov53,
+                R.drawable.mov54,
+                R.drawable.mov55,
+                R.drawable.mov56,
+                R.drawable.mov57,
+                R.drawable.mov58,
+                R.drawable.mov59,
+                R.drawable.mov60)
+
+        for(i in 0..9) {
+            if (position == i)
+                image.setImageResource(poster[i])
+                text.text = title[i]
+        }
+```
+
+</br>
+
+</br>
